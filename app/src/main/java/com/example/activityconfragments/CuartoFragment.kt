@@ -131,20 +131,23 @@ class CuartoFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListe
     override fun onMapClick(p0: LatLng) {
         if(!::map.isInitialized) {}
         else {
-                map.setOnMapClickListener {
+            /*Comentamos este listener, ya que el primer click no lo capturaba,
+            * es decir, con el onMapClick bastaba*/
+               /* map.setOnMapClickListener {*/
                     /*Con esto capturaremos el listener de cada click*/
                     if (start.isEmpty()) {
                         /*significa que estamos en el primer click en el mapa*/
                         /*necesitamos el siguiente formado de coordenada: long,lati en string*/
-                        start = "${it.longitude},${it.latitude}"
+                        //start = "${it.longitude},${it.latitude}"
+                        start = "${p0.longitude},${p0.latitude}"
                     } else if (end.isEmpty()) {
-                        end = "${it.longitude},${it.latitude}"
+                        //end = "${it.longitude},${it.latitude}"
+                        end = "${p0.longitude},${p0.latitude}"
                         crearRuta()
-                    } else {
+                   } /*else {*/
                         /*Si entra aqui será la tercera vez que se clica en el mapa*/
 
-                    }
-                }
+                    /*}*/
         }
     }
 }
