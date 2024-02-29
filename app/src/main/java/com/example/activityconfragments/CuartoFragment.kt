@@ -1,33 +1,37 @@
 package com.example.activityconfragments
 
+//import android.widget.Button
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.PolygonOptions
-import com.google.android.gms.maps.model.PolylineOptions
 import com.google.android.gms.maps.model.Polyline
+import com.google.android.gms.maps.model.PolylineOptions
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.create
 
 class CuartoFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListener {
     private lateinit var map: GoogleMap
     private var start:String = ""
     private var end:String = ""
     var poly : Polyline? = null
+
+
+
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -51,6 +55,16 @@ class CuartoFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListe
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val botonLimpiar = requireActivity().findViewById<Button>(R.id.botonLimpiar)
+
+        var args = arguments
+        var s1 = args?.getString("LatOrg")
+        var s2 = args?.getString("LongOrg")
+        var e1 = args?.getString("LatDst")
+        var e2 = args?.getString("LongDst")
+
+        start="$s2,$s1"
+        end="$e2,$e1"
+        crearRuta()
 
         /*Este boton me limpiará las variables start y end de la ruta y la ruta en sí misma*/
         botonLimpiar.setOnClickListener {
@@ -76,7 +90,7 @@ class CuartoFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListe
        /*Hacemos un zoom para que nos sea más fácil calcular una ruta*/
         val coordenadas = LatLng(39.4860415,-0.4044917)
         map.animateCamera(
-            CameraUpdateFactory.newLatLngZoom(coordenadas,18f),
+            CameraUpdateFactory.newLatLngZoom(coordenadas,10f),
             4000,
             null)
     }
@@ -124,6 +138,7 @@ class CuartoFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListe
         }
         activity?.runOnUiThread{
             /*Ejecutamos la acción de dibujado en la corutina*/
+            polilineOptions.color(Color.RED)
             poly = map.addPolyline(polilineOptions)
         }
     }

@@ -1,8 +1,8 @@
 package com.example.activityconfragments
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 
 class MainActivity : AppCompatActivity() {
@@ -15,7 +15,15 @@ class MainActivity : AppCompatActivity() {
         val botonGasolineras=findViewById<Button>(R.id.botonGasolineras)
         val botonGas=findViewById<Button>(R.id.botonGas)
 
+        val bundle = Bundle()
+        bundle.putString("LatOrg", "39.4698189")
+        bundle.putString("LongOrg", "-0.3789371")
+        bundle.putString("LatDst", "39.4725581")
+        bundle.putString("LongDst", "-0.3416306")
+
         // Cargamos un fragment en el contenedor de fragments
+
+
         val firstFragment = FirstFragment()
 
         supportFragmentManager.beginTransaction()
@@ -28,9 +36,12 @@ class MainActivity : AppCompatActivity() {
             replaceFragment(fragment)
         }
 
+       val quartoFragment:Fragment = CuartoFragment()
+       quartoFragment.arguments = bundle
+
         botonGasolineras.setOnClickListener {
             supportFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container,CuartoFragment())
+                .replace(R.id.fragment_container,quartoFragment)
                 .addToBackStack(null)
                 .commit()
         }
